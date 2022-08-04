@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html><head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Logic App: Basic XML to JSON Expression Conversion - johnokeeffe</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Introduction Working with JSON data in logic apps is native and really is a plus for the PaaS solution. Working with XML is also relatively easy, even with xpaths but it is not native like JSON. When I came across the problem myself I found it much faster and easier taking the approach of simply converting to JSON as I was much more familiar with it.
+Below is an overview of the approach I take when working with XML data." />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="Logic App: Basic XML to JSON Expression Conversion" />
+<meta property="og:description" content="Introduction Working with JSON data in logic apps is native and really is a plus for the PaaS solution. Working with XML is also relatively easy, even with xpaths but it is not native like JSON. When I came across the problem myself I found it much faster and easier taking the approach of simply converting to JSON as I was much more familiar with it.
+Below is an overview of the approach I take when working with XML data." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://johnokeeffe.ie/posts/2020-11-01-logic-app-basic-xml-json-conversion/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-11-01T18:09:34+01:00" />
+<meta property="article:modified_time" content="2020-11-01T18:09:34+01:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Logic App: Basic XML to JSON Expression Conversion"/>
+<meta name="twitter:description" content="Introduction Working with JSON data in logic apps is native and really is a plus for the PaaS solution. Working with XML is also relatively easy, even with xpaths but it is not native like JSON. When I came across the problem myself I found it much faster and easier taking the approach of simply converting to JSON as I was much more familiar with it.
+Below is an overview of the approach I take when working with XML data."/>
+
+	
+        <link href="http://johnokeeffe.ie/css/fonts.7fa06c2792c8589768ffcdaf014e4bfc7f2ccbfba059f8e87131158970c23ed3.css" rel="stylesheet">
+	
+
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="http://johnokeeffe.ie/css/main.58ed1f9f233a108ca431c43f4e703a839ded6628733e05a9ae6288037e2ab711.css" />
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="http://johnokeeffe.ie/">johnokeeffe</a>
+	</div>
+	<nav>
+		
+		
+	</nav>
+</header>
+
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">Logic App: Basic XML to JSON Expression Conversion</h1>
+			<div class="meta">Posted on Nov 1, 2020</div>
+		</div>
+		
+
+		<section class="body">
+			<h1 id="introduction">Introduction</h1>
+<p>Working with JSON data in logic apps is native and really is a plus for the PaaS solution. Working with XML is also relatively easy, even with xpaths but it is not native like JSON. When I came across the problem myself I found it much faster and easier taking the approach of simply converting to JSON as I was much more familiar with it.</p>
+<p>Below is an overview of the approach I take when working with XML data.</p>
+<h2 id="scenario">Scenario</h2>
+<p>In the below scenario we receive online orders from our web store. We can receive order requests that could be sent anywhere in the world. When an order comes in, we use the country field under the shipping address as the conditional value. Based off of this value we then send the order request to the distributor supplying that region.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34;?&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;PurchaseOrder</span> <span style="color:#a6e22e">PurchaseOrderNumber=</span><span style="color:#e6db74">&#34;99503&#34;</span> <span style="color:#a6e22e">OrderDate=</span><span style="color:#e6db74">&#34;1999-10-20&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;Address</span> <span style="color:#a6e22e">Type=</span><span style="color:#e6db74">&#34;Shipping&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;Name&gt;</span>Adam Murphy<span style="color:#f92672">&lt;/Name&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;Street&gt;</span>123 Maple Street<span style="color:#f92672">&lt;/Street&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;City&gt;</span>Mill Valley<span style="color:#f92672">&lt;/City&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;State&gt;</span>CA<span style="color:#f92672">&lt;/State&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;Zip&gt;</span>10999<span style="color:#f92672">&lt;/Zip&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;Country&gt;</span>Ireland<span style="color:#f92672">&lt;/Country&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/Address&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;Address</span> <span style="color:#a6e22e">Type=</span><span style="color:#e6db74">&#34;Billing&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;Name&gt;</span>Tai Yee<span style="color:#f92672">&lt;/Name&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;Street&gt;</span>8 Oak Avenue<span style="color:#f92672">&lt;/Street&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;City&gt;</span>Old Town<span style="color:#f92672">&lt;/City&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;State&gt;</span>PA<span style="color:#f92672">&lt;/State&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;Zip&gt;</span>95819<span style="color:#f92672">&lt;/Zip&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;Country&gt;</span>Ireland<span style="color:#f92672">&lt;/Country&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/Address&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;DeliveryNotes</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;Items&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;Item</span> <span style="color:#a6e22e">PartNumber=</span><span style="color:#e6db74">&#34;872-AA&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;ProductName&gt;</span>Lawnmower<span style="color:#f92672">&lt;/ProductName&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;Quantity&gt;</span>1<span style="color:#f92672">&lt;/Quantity&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;USPrice&gt;</span>148.95<span style="color:#f92672">&lt;/USPrice&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;Comment&gt;</span>Confirm this is electric<span style="color:#f92672">&lt;/Comment&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/Item&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;/Items&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/PurchaseOrder&gt;</span>
+</span></span></code></pre></div><table>
+<thead>
+<tr>
+<th style="text-align:center">Azure</th>
+<th style="text-align:center">Postman</th>
+<th style="text-align:center">GitHub Repo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjohn-o-keeffe%2FBlogResources%2Fmain%2Flogic-app-basic-xml-json-conversion-samples%2Fazuredeploy.json"><img src="https://aka.ms/deploytoazurebutton" alt="Deploy to Azure"></a></td>
+<td style="text-align:center"><a href="https://app.getpostman.com/run-collection/bda8ade15f3e3acddcf6"><img src="https://run.pstmn.io/button.svg" alt="Run in Postman"></a></td>
+<td style="text-align:center"><a href="https://github.com/john-o-keeffe/BlogResources/tree/main/logic-app-basic-xml-json-conversion-samples">Github Link</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="walk-through">Walk-through</h2>
+<h3 id="logic-app">Logic App</h3>
+<h4 id="http-trigger">HTTP Trigger</h4>
+<p>First setup a HTTP trigger, this will be needed for testing and accepting the XML body content. We will be using <a href="https://www.postman.com/downloads/">Postman</a> in this case to test the logic app URI.</p>
+<h4 id="initialize-variable">Initialize Variable</h4>
+<p>Now using the initialize variable action we create a string. I use this as an easy way to test and develop expressions, as you can see the expression develop overtime. Troubleshooting using some of the control actions is not easy.</p>
+<p>When creating expressions it is always easier to take it one function at a time.</p>
+<p>Step 1: First we convert the HTTP trigger body to XML.</p>
+<p><img src="https://raw.githubusercontent.com/john-o-keeffe/BlogResources/main/logic-app-basic-xml-json-conversion-samples/logicapp-http-variable-01.png" alt="Logic app http and variable"></p>
+<ul>
+<li>This then outputs the trigger body content in it&rsquo;s XML format. In this case it is always better to be explicit here.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>xml(triggerBody())
+</span></span></code></pre></div><p><img src="https://github.com/john-o-keeffe/BlogResources/blob/main/logic-app-basic-xml-json-conversion-samples/logicapp-variable-02.png?raw=true" alt="Logic app http and variable"></p>
+<p>Step 2: We convert the XML to JSON. This will then allow us to access these elements.</p>
+<p><img src="https://github.com/john-o-keeffe/BlogResources/blob/main/logic-app-basic-xml-json-conversion-samples/logicapp-variable-03.png?raw=true" alt="Logic app http and variable"></p>
+<ul>
+<li>This is easy to do so far due to the native XML and JSON expression functions.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>json(xml(triggerBody()))
+</span></span></code></pre></div><p><img src="https://github.com/john-o-keeffe/BlogResources/blob/main/logic-app-basic-xml-json-conversion-samples/logicapp-variable-04.png?raw=true" alt="Logic app http and variable"></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;?xml&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;@version&#34;</span>: <span style="color:#e6db74">&#34;1.0&#34;</span>
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;PurchaseOrder&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;@PurchaseOrderNumber&#34;</span>: <span style="color:#e6db74">&#34;99503&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;@OrderDate&#34;</span>: <span style="color:#e6db74">&#34;1999-10-20&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;Address&#34;</span>: [
+</span></span><span style="display:flex;"><span>            {
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;@Type&#34;</span>: <span style="color:#e6db74">&#34;Shipping&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;Name&#34;</span>: <span style="color:#e6db74">&#34;Ellen Adams&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;Street&#34;</span>: <span style="color:#e6db74">&#34;123 Maple Street&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;City&#34;</span>: <span style="color:#e6db74">&#34;Mill Valley&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;State&#34;</span>: <span style="color:#e6db74">&#34;CA&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;Zip&#34;</span>: <span style="color:#e6db74">&#34;10999&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;Country&#34;</span>: <span style="color:#e6db74">&#34;USA&#34;</span>
+</span></span><span style="display:flex;"><span>            },
+</span></span><span style="display:flex;"><span>            {
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;@Type&#34;</span>: <span style="color:#e6db74">&#34;Billing&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;Name&#34;</span>: <span style="color:#e6db74">&#34;Tai Yee&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;Street&#34;</span>: <span style="color:#e6db74">&#34;8 Oak Avenue&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;City&#34;</span>: <span style="color:#e6db74">&#34;Old Town&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;State&#34;</span>: <span style="color:#e6db74">&#34;PA&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;Zip&#34;</span>: <span style="color:#e6db74">&#34;95819&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;Country&#34;</span>: <span style="color:#e6db74">&#34;USA&#34;</span>
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        ],
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;DeliveryNotes&#34;</span>: <span style="color:#e6db74">&#34;Please leave packages in shed by driveway.&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;Items&#34;</span>: {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Item&#34;</span>: [
+</span></span><span style="display:flex;"><span>                {
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&#34;@PartNumber&#34;</span>: <span style="color:#e6db74">&#34;872-AA&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&#34;ProductName&#34;</span>: <span style="color:#e6db74">&#34;Lawnmower&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&#34;Quantity&#34;</span>: <span style="color:#e6db74">&#34;1&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&#34;USPrice&#34;</span>: <span style="color:#e6db74">&#34;148.95&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&#34;Comment&#34;</span>: <span style="color:#e6db74">&#34;Confirm this is electric&#34;</span>
+</span></span><span style="display:flex;"><span>                },
+</span></span><span style="display:flex;"><span>                {
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&#34;@PartNumber&#34;</span>: <span style="color:#e6db74">&#34;926-AA&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&#34;ProductName&#34;</span>: <span style="color:#e6db74">&#34;Baby Monitor&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&#34;Quantity&#34;</span>: <span style="color:#e6db74">&#34;2&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&#34;USPrice&#34;</span>: <span style="color:#e6db74">&#34;39.98&#34;</span>,
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&#34;ShipDate&#34;</span>: <span style="color:#e6db74">&#34;1999-05-21&#34;</span>
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            ]
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Step 3: We now start to go down the JSON path to get the country object.</p>
+<ul>
+<li>PurchaseOrder
+<ul>
+<li>Address[0]
+<ul>
+<li>Country</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Due to the schema selected for this order request there were two address elements. Above shows, having converted it to JSON the address object is now in an array.
+It is easy to overcome in this case, as the address we want is on the zero index of this array.</p>
+<p><img src="https://github.com/john-o-keeffe/BlogResources/blob/main/logic-app-basic-xml-json-conversion-samples/logicapp-variable-06.png?raw=true" alt="Logic app http and variable"></p>
+<ul>
+<li>We can see below the value output is the JSON country object.</li>
+</ul>
+<p><img src="https://github.com/john-o-keeffe/BlogResources/blob/main/logic-app-basic-xml-json-conversion-samples/logicapp-variable-05.png?raw=true" alt="Logic app http and variable"></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>json(xml(triggerBody()))[&#39;PurchaseOrder&#39;][&#39;Address&#39;][0][&#39;Country&#39;]
+</span></span></code></pre></div><p>We have a full expression that we can now use in a switch control. Using this in conjunction with HTTP request actions, we can start to send our orders to the distributors.
+In this example we will create two <a href="https://requestbin.com/">Request Bin</a> endpoints for testing.</p>
+<ul>
+<li>In the switch statement below we can use the variable we just created called &lsquo;country&rsquo;. In addition to this we can add a &rsquo;tolower&rsquo; function to the expression as the switch action values are case sensitive.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>tolower(json(xml(triggerBody()))[&#39;PurchaseOrder&#39;][&#39;Address&#39;][0][&#39;Country&#39;])
+</span></span></code></pre></div><p><img src="https://github.com/john-o-keeffe/BlogResources/blob/main/logic-app-basic-xml-json-conversion-samples/logicapp-switch-http-07.png?raw=true" alt="Logic app http and variable"></p>
+<p><img src="https://github.com/john-o-keeffe/BlogResources/blob/main/logic-app-basic-xml-json-conversion-samples/logicapp-switch-http-08.png?raw=true" alt="Logic app http and variable"></p>
+<p>The request bin response:</p>
+<p><img src="https://github.com/john-o-keeffe/BlogResources/blob/main/logic-app-basic-xml-json-conversion-samples/requestbin-response-09.png?raw=true" alt="Logic app http and variable"></p>
+<h2 id="conclusion">Conclusion</h2>
+<p>This isn&rsquo;t the only approach to working with XML data in logic apps. I found if you are familiar with JSON in logic apps and XML is new to you, this is a quick and easy way to work with XML data.</p>
+<h2 id="software-used">Software Used</h2>
+<ul>
+<li>VS Code</li>
+<li>Postman</li>
+<li>Request Bin</li>
+</ul>
+
+		</section>
+
+		<div class="post-tags">
+			
+			
+			
+		</div>
+	</article>
+</main>
+<footer>
+  <div style="display:flex"></div>
+  <div class="footer-info">
+    2022  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
+</footer>
+
+
+</div>
+    </body>
+</html>

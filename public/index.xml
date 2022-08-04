@@ -6,14 +6,24 @@
     <description>Recent content on johnokeeffe</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 01 Aug 2022 18:09:34 +0100</lastBuildDate><atom:link href="http://johnokeeffe.ie/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 01 Nov 2021 18:09:34 +0100</lastBuildDate><atom:link href="http://johnokeeffe.ie/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>My First Post</title>
-      <link>http://johnokeeffe.ie/posts/my-first-post/</link>
-      <pubDate>Mon, 01 Aug 2022 18:09:34 +0100</pubDate>
+      <title>Power Automate: Handling JSON schema validation with Parse JSON</title>
+      <link>http://johnokeeffe.ie/posts/2021-11-24-power-automate-parse-json-validation-handling/</link>
+      <pubDate>Mon, 01 Nov 2021 18:09:34 +0100</pubDate>
       
-      <guid>http://johnokeeffe.ie/posts/my-first-post/</guid>
-      <description></description>
+      <guid>http://johnokeeffe.ie/posts/2021-11-24-power-automate-parse-json-validation-handling/</guid>
+      <description>Introduction Had a scenario recently when working on a project where I needed to check some required columns from a staging excel file before it was inserted into a master excel file. Now in this case it only was a small subset of the overall columns in the excel were actually needed for the process. But I didn&amp;rsquo;t want the whole process to fall over if only one row was missing so I used the some scopes, parse JSON and JSON schema magic to build the below solution to get around it.</description>
+    </item>
+    
+    <item>
+      <title>Logic App: Basic XML to JSON Expression Conversion</title>
+      <link>http://johnokeeffe.ie/posts/2020-11-01-logic-app-basic-xml-json-conversion/</link>
+      <pubDate>Sun, 01 Nov 2020 18:09:34 +0100</pubDate>
+      
+      <guid>http://johnokeeffe.ie/posts/2020-11-01-logic-app-basic-xml-json-conversion/</guid>
+      <description>Introduction Working with JSON data in logic apps is native and really is a plus for the PaaS solution. Working with XML is also relatively easy, even with xpaths but it is not native like JSON. When I came across the problem myself I found it much faster and easier taking the approach of simply converting to JSON as I was much more familiar with it.
+Below is an overview of the approach I take when working with XML data.</description>
     </item>
     
   </channel>
