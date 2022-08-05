@@ -1,0 +1,3 @@
+User-agent: *
+Disallow:
+Sitemap: https://johnokeeffe.pages.dev/sitemap.xml
