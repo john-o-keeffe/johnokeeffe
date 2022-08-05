@@ -1,0 +1,91 @@
+<!DOCTYPE html><html lang="en-gb"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Logic App: Basic XML to JSON Expression Conversion - johnokeeffe</title><meta name="description" content="Introduction Working with JSON data in logic apps is native and really is a plus for the PaaS solution. Working with XML is also relatively easy, even with xpaths but it is not native like JSON. When I came across the problem myself I found&hellip;"><meta name="generator" content="Publii Open-Source CMS for Static Site"><link rel="canonical" href="https://johnokeeffe.pages.dev/logic-app-basic-xml-to-json-expression-conversion.html"><link rel="alternate" type="application/atom+xml" href="https://johnokeeffe.pages.dev/feed.xml"><link rel="alternate" type="application/json" href="https://johnokeeffe.pages.dev/feed.json"><meta property="og:title" content="Logic App: Basic XML to JSON Expression Conversion"><meta property="og:site_name" content="johnokeeffe"><meta property="og:description" content="Introduction Working with JSON data in logic apps is native and really is a plus for the PaaS solution. Working with XML is also relatively easy, even with xpaths but it is not native like JSON. When I came across the problem myself I found&hellip;"><meta property="og:url" content="https://johnokeeffe.pages.dev/logic-app-basic-xml-to-json-expression-conversion.html"><meta property="og:type" content="article"><link rel="stylesheet" href="https://johnokeeffe.pages.dev/assets/css/style.css?v=4128e7e1a641a287245dedc222b18c79"><script type="application/ld+json">{"@context":"http://schema.org","@type":"Article","mainEntityOfPage":{"@type":"WebPage","@id":"https://johnokeeffe.pages.dev/logic-app-basic-xml-to-json-expression-conversion.html"},"headline":"Logic App: Basic XML to JSON Expression Conversion","datePublished":"2022-08-06T00:15","dateModified":"2022-08-06T00:15","description":"Introduction Working with JSON data in logic apps is native and really is a plus for the PaaS solution. Working with XML is also relatively easy, even with xpaths but it is not native like JSON. When I came across the problem myself I found&hellip;","author":{"@type":"Person","name":"johnokeeffe","url":"https://johnokeeffe.pages.dev/authors/johnokeeffe/"},"publisher":{"@type":"Organization","name":"johnokeeffe"}}</script></head><body><div class="site-container"><header class="top" id="js-header"><a class="logo" href="https://johnokeeffe.pages.dev/">johnokeeffe</a></header><main><article class="post"><div class="hero"><header class="hero__content"><div class="wrapper"><div class="post__meta"><time datetime="2022-08-06T00:15">August 6, 2022</time></div><h1>Logic App: Basic XML to JSON Expression Conversion</h1><div class="post__meta post__meta--author"><a href="https://johnokeeffe.pages.dev/authors/johnokeeffe/" class="feed__author">johnokeeffe</a></div></div></header></div><div class="wrapper post__entry"><h1 id="introduction">Introduction</h1><p>Working with JSON data in logic apps is native and really is a plus for the PaaS solution. Working with XML is also relatively easy, even with xpaths but it is not native like JSON. When I came across the problem myself I found it much faster and easier taking the approach of simply converting to JSON as I was much more familiar with it.</p><p>Below is an overview of the approach I take when working with XML data.</p><h2 id="scenario">Scenario</h2><p>In the below scenario we receive online orders from our web store. We can receive order requests that could be sent anywhere in the world. When an order comes in, we use the country field under the shipping address as the conditional value. Based off of this value we then send the order request to the distributor supplying that region.</p><pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;PurchaseOrder PurchaseOrderNumber=&quot;99503&quot; OrderDate=&quot;1999-10-20&quot;&gt;
+  &lt;Address Type=&quot;Shipping&quot;&gt;
+    &lt;Name&gt;Adam Murphy&lt;/Name&gt;
+    &lt;Street&gt;123 Maple Street&lt;/Street&gt;
+    &lt;City&gt;Mill Valley&lt;/City&gt;
+    &lt;State&gt;CA&lt;/State&gt;
+    &lt;Zip&gt;10999&lt;/Zip&gt;
+    &lt;Country&gt;Ireland&lt;/Country&gt;
+  &lt;/Address&gt;
+  &lt;Address Type=&quot;Billing&quot;&gt;
+    &lt;Name&gt;Tai Yee&lt;/Name&gt;
+    &lt;Street&gt;8 Oak Avenue&lt;/Street&gt;
+    &lt;City&gt;Old Town&lt;/City&gt;
+    &lt;State&gt;PA&lt;/State&gt;
+    &lt;Zip&gt;95819&lt;/Zip&gt;
+    &lt;Country&gt;Ireland&lt;/Country&gt;
+  &lt;/Address&gt;
+  &lt;DeliveryNotes /&gt;
+  &lt;Items&gt;
+    &lt;Item PartNumber=&quot;872-AA&quot;&gt;
+      &lt;ProductName&gt;Lawnmower&lt;/ProductName&gt;
+      &lt;Quantity&gt;1&lt;/Quantity&gt;
+      &lt;USPrice&gt;148.95&lt;/USPrice&gt;
+      &lt;Comment&gt;Confirm this is electric&lt;/Comment&gt;
+    &lt;/Item&gt;
+  &lt;/Items&gt;
+&lt;/PurchaseOrder&gt;
+</code></pre><table><thead><tr><th align="center">Azure</th><th align="center">Postman</th><th align="center">GitHub Repo</th></tr></thead><tbody><tr><td align="center"><a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjohn-o-keeffe%2FBlogResources%2Fmain%2Flogic-app-basic-xml-json-conversion-samples%2Fazuredeploy.json"><figure class="post__image"><img loading="lazy" src="https://aka.ms/deploytoazurebutton" data-is-external-image="true" alt="Deploy to Azure"></figure></a></td><td align="center"><a href="https://app.getpostman.com/run-collection/bda8ade15f3e3acddcf6"><figure class="post__image"><img loading="lazy" src="https://run.pstmn.io/button.svg" data-is-external-image="true" alt="Run in Postman"></figure></a></td><td align="center">[Github Link][Github-repo]</td></tr></tbody></table><h2 id="walk-through">Walk-through</h2><h3 id="logic-app">Logic App</h3><h4 id="http-trigger">HTTP Trigger</h4><p>First setup a HTTP trigger, this will be needed for testing and accepting the XML body content. We will be using <a href="https://www.postman.com/downloads/">Postman</a> in this case to test the logic app URI.</p><h4 id="initialize-variable">Initialize Variable</h4><p>Now using the initialize variable action we create a string. I use this as an easy way to test and develop expressions, as you can see the expression develop overtime. Troubleshooting using some of the control actions is not easy.</p><p>When creating expressions it is always easier to take it one function at a time.</p><p>Step 1: First we convert the HTTP trigger body to XML.</p><p></p><figure class="post__image"><img loading="lazy" src="https://raw.githubusercontent.com/john-o-keeffe/BlogResources/main/logic-app-basic-xml-json-conversion-samples/logicapp-http-variable-01.png" data-is-external-image="true" alt="Logic app http and variable"></figure><p></p><ul><li>This then outputs the trigger body content in it’s XML format. In this case it is always better to be explicit here.</li></ul><pre><code class="language-plain">xml(triggerBody())
+</code></pre><p></p><figure class="post__image"><img loading="lazy" src="https://github.com/john-o-keeffe/BlogResources/blob/main/logic-app-basic-xml-json-conversion-samples/logicapp-variable-02.png?raw=true" data-is-external-image="true" alt="Logic app http and variable"></figure><p></p><p>Step 2: We convert the XML to JSON. This will then allow us to access these elements.</p><p></p><figure class="post__image"><img loading="lazy" src="https://github.com/john-o-keeffe/BlogResources/blob/main/logic-app-basic-xml-json-conversion-samples/logicapp-variable-03.png?raw=true" data-is-external-image="true" alt="Logic app http and variable"></figure><p></p><ul><li>This is easy to do so far due to the native XML and JSON expression functions.</li></ul><pre><code class="language-plain">json(xml(triggerBody()))
+</code></pre><p></p><figure class="post__image"><img loading="lazy" src="https://github.com/john-o-keeffe/BlogResources/blob/main/logic-app-basic-xml-json-conversion-samples/logicapp-variable-04.png?raw=true" data-is-external-image="true" alt="Logic app http and variable"></figure><p></p><pre><code class="language-json">{
+    &quot;?xml&quot;: {
+        &quot;@version&quot;: &quot;1.0&quot;
+    },
+    &quot;PurchaseOrder&quot;: {
+        &quot;@PurchaseOrderNumber&quot;: &quot;99503&quot;,
+        &quot;@OrderDate&quot;: &quot;1999-10-20&quot;,
+        &quot;Address&quot;: [
+            {
+                &quot;@Type&quot;: &quot;Shipping&quot;,
+                &quot;Name&quot;: &quot;Ellen Adams&quot;,
+                &quot;Street&quot;: &quot;123 Maple Street&quot;,
+                &quot;City&quot;: &quot;Mill Valley&quot;,
+                &quot;State&quot;: &quot;CA&quot;,
+                &quot;Zip&quot;: &quot;10999&quot;,
+                &quot;Country&quot;: &quot;USA&quot;
+            },
+            {
+                &quot;@Type&quot;: &quot;Billing&quot;,
+                &quot;Name&quot;: &quot;Tai Yee&quot;,
+                &quot;Street&quot;: &quot;8 Oak Avenue&quot;,
+                &quot;City&quot;: &quot;Old Town&quot;,
+                &quot;State&quot;: &quot;PA&quot;,
+                &quot;Zip&quot;: &quot;95819&quot;,
+                &quot;Country&quot;: &quot;USA&quot;
+            }
+        ],
+        &quot;DeliveryNotes&quot;: &quot;Please leave packages in shed by driveway.&quot;,
+        &quot;Items&quot;: {
+            &quot;Item&quot;: [
+                {
+                    &quot;@PartNumber&quot;: &quot;872-AA&quot;,
+                    &quot;ProductName&quot;: &quot;Lawnmower&quot;,
+                    &quot;Quantity&quot;: &quot;1&quot;,
+                    &quot;USPrice&quot;: &quot;148.95&quot;,
+                    &quot;Comment&quot;: &quot;Confirm this is electric&quot;
+                },
+                {
+                    &quot;@PartNumber&quot;: &quot;926-AA&quot;,
+                    &quot;ProductName&quot;: &quot;Baby Monitor&quot;,
+                    &quot;Quantity&quot;: &quot;2&quot;,
+                    &quot;USPrice&quot;: &quot;39.98&quot;,
+                    &quot;ShipDate&quot;: &quot;1999-05-21&quot;
+                }
+            ]
+        }
+    }
+}
+</code></pre><p>Step 3: We now start to go down the JSON path to get the country object.</p><ul><li>PurchaseOrder<ul><li>Address[0]<ul><li>Country</li></ul></li></ul></li></ul><p>Due to the schema selected for this order request there were two address elements. Above shows, having converted it to JSON the address object is now in an array. It is easy to overcome in this case, as the address we want is on the zero index of this array.</p><p></p><figure class="post__image"><img loading="lazy" src="https://github.com/john-o-keeffe/BlogResources/blob/main/logic-app-basic-xml-json-conversion-samples/logicapp-variable-06.png?raw=true" data-is-external-image="true" alt="Logic app http and variable"></figure><p></p><ul><li>We can see below the value output is the JSON country object.</li></ul><p></p><figure class="post__image"><img loading="lazy" src="https://github.com/john-o-keeffe/BlogResources/blob/main/logic-app-basic-xml-json-conversion-samples/logicapp-variable-05.png?raw=true" data-is-external-image="true" alt="Logic app http and variable"></figure><p></p><pre><code class="language-plain">json(xml(triggerBody()))[&#39;PurchaseOrder&#39;][&#39;Address&#39;][0][&#39;Country&#39;]
+</code></pre><p>We have a full expression that we can now use in a switch control. Using this in conjunction with HTTP request actions, we can start to send our orders to the distributors. In this example we will create two <a href="https://requestbin.com/">Request Bin</a> endpoints for testing.</p><ul><li>In the switch statement below we can use the variable we just created called ‘country’. In addition to this we can add a ‘tolower’ function to the expression as the switch action values are case sensitive.</li></ul><pre><code class="language-plain">tolower(json(xml(triggerBody()))[&#39;PurchaseOrder&#39;][&#39;Address&#39;][0][&#39;Country&#39;])
+</code></pre><p></p><figure class="post__image"><img loading="lazy" src="https://github.com/john-o-keeffe/BlogResources/blob/main/logic-app-basic-xml-json-conversion-samples/logicapp-switch-http-07.png?raw=true" data-is-external-image="true" alt="Logic app http and variable"></figure><p></p><p></p><figure class="post__image"><img loading="lazy" src="https://github.com/john-o-keeffe/BlogResources/blob/main/logic-app-basic-xml-json-conversion-samples/logicapp-switch-http-08.png?raw=true" data-is-external-image="true" alt="Logic app http and variable"></figure><p></p><p>The request bin response:</p><p></p><figure class="post__image"><img loading="lazy" src="https://github.com/john-o-keeffe/BlogResources/blob/main/logic-app-basic-xml-json-conversion-samples/requestbin-response-09.png?raw=true" data-is-external-image="true" alt="Logic app http and variable"></figure><p></p><h2 id="conclusion">Conclusion</h2><p>This isn’t the only approach to working with XML data in logic apps. I found if you are familiar with JSON in logic apps and XML is new to you, this is a quick and easy way to work with XML data.</p><h2 id="software-used">Software Used</h2><ul><li>VS Code</li><li>Postman</li><li>Request Bin</li></ul></div><footer class="wrapper post__footer"><p class="post__last-updated">This article was updated on August 6, 2022</p><div class="post__share"></div><div class="post__bio bio"><div class="bio__info"><h3 class="bio__name"><a href="https://johnokeeffe.pages.dev/authors/johnokeeffe/" rel="author">johnokeeffe</a></h3></div></div></footer></article><nav class="post__nav"><div class="post__nav-inner"><div class="post__nav-next"><a href="https://johnokeeffe.pages.dev/power-automate-handling-json-schema-validation-with-parse-json.html" class="post__nav-link" rel="next"><span>Next</span> Power Automate: Handling JSON schema validation with Parse JSON </a><svg width="1.041em" height="0.416em" aria-hidden="true"><use xlink:href="https://johnokeeffe.pages.dev/assets/svg/svg-map.svg#arrow-next"/></svg></div></div></nav><div class="post__related related"><div class="wrapper"><h2 class="h5 related__title">You should also read:</h2><article class="related__item"><div class="feed__meta"><time datetime="2022-08-06T00:16" class="feed__date">August 6, 2022</time></div><h3 class="h1"><a href="https://johnokeeffe.pages.dev/power-automate-handling-json-schema-validation-with-parse-json.html">Power Automate: Handling JSON schema validation with Parse JSON</a></h3></article></div></div></main><footer class="footer"><div class="footer__copyright"><p>Powered by Publii</p></div><button onclick="backToTopFunction()" id="backToTop" class="footer__bttop" aria-label="Back to top" title="Back to top"><svg><use xlink:href="https://johnokeeffe.pages.dev/assets/svg/svg-map.svg#toparrow"/></svg></button></footer></div><script defer="defer" src="https://johnokeeffe.pages.dev/assets/js/scripts.min.js?v=f47c11534595205f20935f0db2a62a85"></script><script>window.publiiThemeMenuConfig={mobileMenuMode:'sidebar',animationSpeed:300,submenuWidth: 'auto',doubleClickTime:500,mobileMenuExpandableSubmenus:true,relatedContainerForOverlayMenuSelector:'.top'};</script><script>var images = document.querySelectorAll('img[loading]');
+
+        for (var i = 0; i < images.length; i++) {
+            if (images[i].complete) {
+                images[i].classList.add('is-loaded');
+            } else {
+                images[i].addEventListener('load', function () {
+                    this.classList.add('is-loaded');
+                }, false);
+            }
+        }</script></body></html>
