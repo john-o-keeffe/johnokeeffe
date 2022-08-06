@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title>johnokeeffe</title>
-    <link href="https://johnokeeffe.pages.dev/feed.xml" rel="self" />
-    <link href="https://johnokeeffe.pages.dev" />
+    <link href="https://johnokeeffe..ie/feed.xml" rel="self" />
+    <link href="https://johnokeeffe..ie" />
     <updated>2022-08-06T00:16:09+01:00</updated>
     <author>
         <name>johnokeeffe</name>
     </author>
-    <id>https://johnokeeffe.pages.dev</id>
+    <id>https://johnokeeffe..ie</id>
 
     <entry>
         <title>Power Automate: Handling JSON schema validation with Parse JSON</title>
         <author>
             <name>johnokeeffe</name>
         </author>
-        <link href="https://johnokeeffe.pages.dev/power-automate-handling-json-schema-validation-with-parse-json.html"/>
-        <id>https://johnokeeffe.pages.dev/power-automate-handling-json-schema-validation-with-parse-json.html</id>
+        <link href="https://johnokeeffe..ie/power-automate-handling-json-schema-validation-with-parse-json.html"/>
+        <id>https://johnokeeffe..ie/power-automate-handling-json-schema-validation-with-parse-json.html</id>
 
         <updated>2022-08-06T00:16:09+01:00</updated>
             <summary>
@@ -49,7 +49,7 @@ number (vin) as we can lookup the rest of the data from the vin. But if this vin
 <td>1</td>
 <td>Chrisse</td>
 <td>Marieton</td>
-<td><a href="mailto:&#99;&#x6d;&#97;&#x72;&#x69;&#101;&#116;&#111;&#x6e;&#x30;&#x40;&#x75;&#109;&#x6e;&#46;&#101;&#x64;&#117;">&#99;&#x6d;&#97;&#x72;&#x69;&#101;&#116;&#111;&#x6e;&#x30;&#x40;&#x75;&#109;&#x6e;&#46;&#101;&#x64;&#117;</a></td>
+<td><a href="mailto:&#99;&#x6d;&#97;&#114;&#105;&#x65;&#x74;&#x6f;&#x6e;&#x30;&#64;&#x75;&#109;&#110;&#x2e;&#101;&#100;&#117;">&#99;&#x6d;&#97;&#114;&#105;&#x65;&#x74;&#x6f;&#x6e;&#x30;&#64;&#x75;&#109;&#110;&#x2e;&#101;&#100;&#117;</a></td>
 <td></td>
 <td></td>
 <td></td>
@@ -59,7 +59,7 @@ number (vin) as we can lookup the rest of the data from the vin. But if this vin
 <td>2</td>
 <td>Dion</td>
 <td>Frenchum</td>
-<td><a href="mailto:&#x64;&#x66;&#114;&#x65;&#110;&#99;&#104;&#x75;&#x6d;&#49;&#64;&#110;&#x69;&#102;&#116;&#x79;&#x2e;&#99;&#x6f;&#x6d;">&#x64;&#x66;&#114;&#x65;&#110;&#99;&#104;&#x75;&#x6d;&#49;&#64;&#110;&#x69;&#102;&#116;&#x79;&#x2e;&#99;&#x6f;&#x6d;</a></td>
+<td><a href="mailto:&#100;&#102;&#x72;&#101;&#x6e;&#99;&#x68;&#x75;&#x6d;&#49;&#64;&#x6e;&#105;&#x66;&#116;&#x79;&#46;&#x63;&#111;&#109;">&#100;&#102;&#x72;&#101;&#x6e;&#99;&#x68;&#x75;&#x6d;&#49;&#64;&#x6e;&#105;&#x66;&#116;&#x79;&#46;&#x63;&#111;&#109;</a></td>
 <td></td>
 <td></td>
 <td></td>
@@ -69,7 +69,7 @@ number (vin) as we can lookup the rest of the data from the vin. But if this vin
 <td>3</td>
 <td>Brockie</td>
 <td>Bushaway</td>
-<td><a href="mailto:&#98;&#x62;&#x75;&#x73;&#104;&#97;&#119;&#97;&#x79;&#x32;&#x40;&#x67;&#111;&#x6f;&#x67;&#x6c;&#x65;&#46;&#99;&#x6f;&#x2e;&#x75;&#107;">&#98;&#x62;&#x75;&#x73;&#104;&#97;&#119;&#97;&#x79;&#x32;&#x40;&#x67;&#111;&#x6f;&#x67;&#x6c;&#x65;&#46;&#99;&#x6f;&#x2e;&#x75;&#107;</a></td>
+<td><a href="mailto:&#98;&#x62;&#117;&#115;&#x68;&#97;&#119;&#x61;&#x79;&#50;&#64;&#x67;&#x6f;&#111;&#103;&#x6c;&#101;&#46;&#99;&#111;&#x2e;&#x75;&#107;">&#98;&#x62;&#117;&#115;&#x68;&#97;&#119;&#x61;&#x79;&#50;&#64;&#x67;&#x6f;&#111;&#103;&#x6c;&#101;&#46;&#99;&#111;&#x2e;&#x75;&#107;</a></td>
 <td></td>
 <td></td>
 <td></td>
@@ -79,7 +79,7 @@ number (vin) as we can lookup the rest of the data from the vin. But if this vin
 <td>4</td>
 <td>Janie</td>
 <td>Iacomelli</td>
-<td><a href="mailto:&#x6a;&#x69;&#x61;&#99;&#111;&#x6d;&#101;&#x6c;&#108;&#x69;&#51;&#64;&#117;&#105;&#117;&#99;&#46;&#x65;&#100;&#117;">&#x6a;&#x69;&#x61;&#99;&#111;&#x6d;&#101;&#x6c;&#108;&#x69;&#51;&#64;&#117;&#105;&#117;&#99;&#46;&#x65;&#100;&#117;</a></td>
+<td><a href="mailto:&#x6a;&#x69;&#x61;&#99;&#111;&#x6d;&#x65;&#x6c;&#108;&#x69;&#51;&#64;&#117;&#105;&#117;&#x63;&#x2e;&#x65;&#100;&#117;">&#x6a;&#x69;&#x61;&#99;&#111;&#x6d;&#x65;&#x6c;&#108;&#x69;&#51;&#64;&#117;&#105;&#117;&#x63;&#x2e;&#x65;&#100;&#117;</a></td>
 <td></td>
 <td></td>
 <td></td>
@@ -89,7 +89,7 @@ number (vin) as we can lookup the rest of the data from the vin. But if this vin
 <td>5</td>
 <td>Cassie</td>
 <td>Housby</td>
-<td><a href="mailto:&#99;&#104;&#111;&#x75;&#115;&#98;&#x79;&#x34;&#64;&#105;&#99;&#x71;&#x2e;&#x63;&#x6f;&#x6d;">&#99;&#104;&#111;&#x75;&#115;&#98;&#x79;&#x34;&#64;&#105;&#99;&#x71;&#x2e;&#x63;&#x6f;&#x6d;</a></td>
+<td><a href="mailto:&#99;&#x68;&#x6f;&#117;&#x73;&#98;&#121;&#x34;&#64;&#105;&#99;&#113;&#46;&#99;&#x6f;&#109;">&#99;&#x68;&#x6f;&#117;&#x73;&#98;&#121;&#x34;&#64;&#105;&#99;&#113;&#46;&#99;&#x6f;&#109;</a></td>
 <td>Mitsubishi</td>
 <td>Lancer Evolution</td>
 <td>2004</td>
@@ -198,8 +198,8 @@ number (vin) as we can lookup the rest of the data from the vin. But if this vin
         <author>
             <name>johnokeeffe</name>
         </author>
-        <link href="https://johnokeeffe.pages.dev/logic-app-basic-xml-to-json-expression-conversion.html"/>
-        <id>https://johnokeeffe.pages.dev/logic-app-basic-xml-to-json-expression-conversion.html</id>
+        <link href="https://johnokeeffe..ie/logic-app-basic-xml-to-json-expression-conversion.html"/>
+        <id>https://johnokeeffe..ie/logic-app-basic-xml-to-json-expression-conversion.html</id>
 
         <updated>2022-08-06T00:15:06+01:00</updated>
             <summary>
